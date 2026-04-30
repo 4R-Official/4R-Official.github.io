@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人站 - 电脑端优化版</title>
+    <style>
+        /* 变量定义 */
+        :root {
+            --bg-deep: #0a0a0a;       /* 纯黑背景 */
+            --bg-content: #151515;    /* 内容区深灰 */
+            --cream: #f2efe4;         /* 米白色 */
+            --theater-red: #8b1a1a;   /* 舞台红 */
+            --site-width: 1100px;     /* 电脑端建议宽度 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--cream);
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+        }
+
+        /* 通用容器：控制电脑端居中和宽度 */
+        .container {
+            max-width: var(--site-width);
+            margin: 0 auto;
+            width: 90%;
+        }
+
+        /* 1. 顶部标题栏 */
+        header {
+            background-color: #000;
+            padding: 25px 0;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+        header h1 {
+            font-size: 28px;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* 2. 红色Banner区域 (Hero Section) */
+        .hero-banner {
+            width: 100%;
+            height: 450px; /* 电脑端增加高度 */
+            background-color: var(--theater-red);
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 模拟示意图中的舞台光晕 */
+        .hero-banner::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* 3. 导航菜单 - 悬浮效果 */
+        nav {
+            background-color: #000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        .nav-inner {
+            display: flex;
+            justify-content: flex-start;
+            gap: 50px;
+        }
+        .nav-item {
+            padding: 20px 0;
+            cursor: pointer;
+            font-size: 16px;
+            color: #888;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: var(--cream);
+        }
+        .nav-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--cream);
+        }
+
+        /* 4. 内容主体 */
+        main {
+            padding: 50px 0;
+        }
+        .branch-content {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+        .branch-content.active {
+            display: block;
+        }
+
+        /* --- 模块：图文排版 --- */
+        .row {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 80px;
+            align-items: center;
+        }
+        .row.reverse { flex-direction: row-reverse; }
+        
+        .image-box {
+            width: 200px;
+            height: 220px;
+            background-color: var(--cream);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .text-box {
+            flex-grow: 1;
+        }
+        .text-line {
+            height: 8px;
+            background: #222;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .text-line.short { width: 60%; }
+
+        /* --- 模块：人物剪影 (中间浅色区域) --- */
+        .silhouette-panel {
+            background-color: #d1d1d1;
+            padding: 60px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0;
+        }
+        .silhouette-item {
+            width: 100px;
+            height: 250px;
+            background-color: #111;
+            border-radius: 50px 50px 10px 10px;
+        }
+        .arrow { color: #111; font-size: 40px; cursor: pointer; }
+
+        /* --- 模块：电影胶卷 --- */
+        .film-container {
+            margin: 80px 0;
+            position: relative;
+            padding: 20px 0;
+        }
+        /* 胶卷边缘的小孔 */
+        .film-container::before, .film-container::after {
+            content: "••••••••••••••••••••••••••••••••••••••••••••";
+            display: block;
+            color: var(--cream);
+            letter-spacing: 15px;
+            font-size: 20px;
+            text-align: center;
+            opacity: 0.5;
+        }
+        .film-track {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            overflow-x: hidden;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        .film-frame {
+            min-width: 300px;
+            height: 180px;
+            background-color: #f0ede0;
+            border: 8px solid #000;
+        }
+
+        /* 5. 页脚 */
+        footer {
+            background-color: var(--theater-red);
+            padding: 60px 0;
+            margin-top: 100px;
+        }
+        .footer-logo {
+            width: 150px;
+            height: 20px;
+            background: var(--cream);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>DDDD 个人站</h1>
+        </div>
+    </header>
+
+    <div class="hero-banner">
+        <!-- 以后在这里插入图片 -->
+    </div>
+
+    <nav>
+        <div class="container nav-inner">
+            <div class="nav-item active" onclick="showBranch(0)">分支标题一</div>
+            <div class="nav-item" onclick="showBranch(1)">分支标题二</div>
+            <div class="nav-item" onclick="showBranch(2)">分支标题三</div>
+            <div class="nav-item" onclick="showBranch(3)">分支标题四</div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- 分支 1 -->
+        <div class="branch-content active">
+            <!-- 图文模块 -->
+            <div class="row">
+                <div class="image-box"></div>
+                <div class="text-box">
+                    <div class="text-line"></div>
+                    <div class="text-line"></div>
+                    <div class="text-line"></div>
+                    <div class="text-line short"></div>
+                </div>
+            </div>
+
+            <div class="row reverse">
+                <div class="image-box"></div>
+                <div class="text-box">
+                    <div class="text-line"></div>
+                    <div class="text-line"></div>
+                    <div class="text-line short"></div>
+                </div>
+            </div>
+
+            <!-- 剪影模块 -->
+            <div class="silhouette-panel">
+                <div class="arrow">❮</div>
+                <div class="silhouette-item"></div>
+                <div class="silhouette-item"></div>
+                <div class="arrow">❯</div>
+            </div>
+
+            <!-- 胶卷模块 -->
+            <div class="film-container">
+                <div class="film-track">
+                    <div class="film-frame"></div>
+                    <div class="film-frame"></div>
+                    <div class="film-frame"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 其他分支内容略 (可参照分支1添加内容) -->
+        <div class="branch-content">
+            <h2 style="padding: 100px; text-align: center;">分支二的内容区域</h2>
+        </div>
+        <div class="branch-content">
+            <h2 style="padding: 100px; text-align: center;">分支三的内容区域</h2>
+        </div>
+        <div class="branch-content">
+            <h2 style="padding: 100px; text-align: center;">分支四的内容区域</h2>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-logo"></div>
+        </div>
+    </footer>
+
+    <script>
+        function showBranch(index) {
+            const contents = document.querySelectorAll('.branch-content');
+            const tabs = document.querySelectorAll('.nav-item');
+
+            contents.forEach(c => c.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+
+            contents[index].classList.add('active');
+            tabs[index].classList.add('active');
+            
+            // 切换时自动滚动到内容区顶部（可选）
+            window.scrollTo({
+                top: document.querySelector('nav').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>

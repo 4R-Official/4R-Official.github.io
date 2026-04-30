@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style2.css">
+    <title>NIGRAM</title>
+    <style>
+        /* 引入自定义字体 */
+        @font-face {
+            font-family: 'Huiwen';
+            src: url('mianhome/中文 - Huiwen.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg-black: #121212;
+            --cream-white: #f5f5dc;
+            --theater-red: #7a1f16;
+            --dark-gray: #1e1e1e;
+            /* 定义一个基准比例，方便后续调整 */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Huiwen', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--cream-white);
+            overflow-x: hidden; /* 防止出现横向滚动条 */
+        }
+
+        /* 全局超链接样式 - 使用固定像素确保缩放时字体大小不变 */
+        a {
+            font-size: 16px;
+        }
+
+        /* 1. 标题栏 - 使用 vw 保持比例 */
+        header {
+            background-color: #000;
+            padding: 1.2vw 2vw;
+            font-size: 1.8vw; /* 随窗口缩放字体 */
+            font-weight: bold;
+            position: relative;
+            z-index: 20;
+            font-family: 'Huiwen', "Arial Black", sans-serif;
+        }
+
+        /* 2. Hero Section - 使用 vw 定义高度 */
+        .hero-banner {
+            width: auto;
+            height: 58vw; /* 16:9 比例示例，你可以根据原图比例调整 */
+            background-image: url('mianhome/title.webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: -5vw; /* 负边距也随比例缩放 */
+        }
+
+        .hero-top-img {
+    /* 调整宽度，例如占据屏幕宽度的 40% */
+    width: auto; 
+    height:58vw;
+    
+    /* 确保它在最上方 */
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    /* 过渡效果，让动画更平滑 */
+    transition: transform 0.3s ease;
+}
+
+        .hero-top-img.hover-active {
+    /* 鼠标悬停在不透明区域时放大 */
+    transform: scale(1.05);
+}
+
+        .hero-overlay-img {
+    /* 调整宽度，例如占据屏幕宽度的 40% */
+    width: auto; 
+    height:58vw;
+    
+    /* 确保它在背景图之上 */
+    z-index: 2;
+    
+    /* 如果需要微调上下位置，可以使用 transform */
+    /*transform: translateY(-2vw); */
+    
+    /* 也可以添加一些阴影或发光效果让它更突出 */
+    /* filter: drop-shadow(0 0 1vw rgba(0,0,0,0.5)); */
+    
+    /* 鼠标悬停显示手型 */
+    cursor: pointer;
+    
+    /* 过渡效果，让动画更平滑 */
+    transition: transform 0.3s ease;
+}
+
+        .hero-overlay-img:hover {
+    /* 鼠标悬停时微微放大 */
+    transform: scale(1.05);
+}
+
+/* 确保父级容器能包裹住它（如果图片很大） */
+.hero-banner {
+    position: relative;
+    overflow: hidden; /* 防止图片边缘溢出 */
+}
+
+        /* 3. 导航栏 */
+        .nav-tabs {
+            display: flex;
+            background-image: url('mianhome/索引栏.webp');
+            background-size: 100% 100%;
+            background-position: top;
+            background-repeat: repeat-x;
+            justify-content: space-around;
+            cursor: pointer;
+            position: relative;
+            top: calc(-8vw + 1px); /* 同步缩放的偏移量 */
+            z-index: 10;
+            width: 100%;
+        }
+        .tab-item {
+            padding: 1vw 5vw;
+            font-size: 1.5vw; /* 随窗口缩放 */
+            transition: 0.3s;
+            border-bottom: 0.2vw solid transparent;
+        }
+
+        /* 4. 内容容器 */
+        #content-container {
+            margin-top: -8vw;
+            background-color: var(--bg-black);
+            z-index: 5;
+            position: relative;
+            padding: 0 10vw; /* 增大侧边距 */
+        }
+        .branch-content {
+            display: none;
+            padding: 4vw 0;
+            animation: fadeIn 0.5s;
+        }
+        .branch-content.active {
+            display: block;
+        }
+
+        /* 第一分支结构 */
+        .content-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 3vw;
+            gap: 2vw;
+        }
+        .image-placeholder {
+            width: 20vw; /* 固定比例的宽度 */
+            height: 20vw;
+            background-image: url('mianhome/tsumeimg.webp');
+            background-size: cover;
+            flex-shrink: 0;
+            border-radius: 1vw;
+        }
+        .image-placeholder.new {
+            background-image: url('mianhome/u0img.webp'); /* 替换为不同的图片 */
+        }
+        .text-lines {
+            flex-grow: 1;
+        }
+        .text-lines p {
+            color: var(--cream-white);
+            font-size: 1.2vw;
+            line-height: 1.8;
+            margin-bottom: 1.5vw;
+            margin-top: 0;
+        }
+
+        /* 电影胶卷 */
+        .video-slider {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin: 2vw -4vw;
+        }
+        .video-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+            background-image: url('mianhome/film.webp');
+            background-size: 48% 100%;
+            background-position: -11vw center;
+            background-repeat: repeat-x;
+            padding: 3vw 0; /* 减小胶卷高度 */
+        }
+        .video-slider:hover .video-track {
+            animation-play-state: paused;
+        }
+        .video-item {
+            flex-shrink: 0;
+            width: 20vw;
+            height: 11.25vw; /* 16:9 比例 */
+            margin-right: 2vw;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border-radius: 1vw;
+            display: block;
+        }
+        .video-item:hover{
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .video-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3vw;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-item:hover .play-overlay {
+            opacity: 1;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-50%)); }
+        }
+        /* INTRODUCE 分支样式 - 带背景图片 */
+        .branch-content.introduce-block {
+            position: relative;
+            min-height: 60vw;
+            overflow: visible;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+        }
+
+        .introduce-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('mianhome/background1.webp');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .introduce-content {
+            position: relative;
+            z-index: 1;
+            padding: 2vw 4vw;
+        }
+
+        /* UTAU 分支样式 - 左侧竖线装饰 */
+        .utau-block {
+            padding: 3vw 4vw;
+            border-left: 4px solid var(--theater-red);
+            background: linear-gradient(90deg, rgba(220, 20, 60, 0.05) 0%, transparent 100%);
+            display: flex;
+            gap: 4vw;
+            align-items: flex-start;
+        }
+
+        .utau-left {
+            flex: 1;
+        }
+
+        .utau-right {
+            flex-shrink: 0;
+        }
+
+        .utau-block h2 {
+            font-size: 2.8vw;
+            margin-top: 0;
+            color: var(--theater-red);
+            font-weight: bold;
+            letter-spacing: 0.3vw;
+            margin-bottom: 2vw;
+            text-transform: uppercase;
+        }
+
+        .utau-block p {
+            font-size: 1.4vw;
+            line-height: 2;
+            color: rgba(245, 245, 220, 0.9);
+            margin-bottom: 1.5vw;
+        }
+
+        .utau-block ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .utau-block li {
+            margin-bottom: 0.8vw;
+        }
+
+        .utau-block li a {
+            font-size: 16px !important;
+            color: #f5f5dc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .utau-block li a:hover {
+            color: #ff6b6b;
+        }
+
+        /* GROCERY 分支样式 - 带背景幻灯片 */
+        .branch-content:has(.grocery-block) {
+            background: transparent;
+        }
+        
+        .grocery-block {
+            padding: 4vw;
+            text-align: center;
+            position: relative;
+            min-height: 25vw; /* 16:9 高度 */
+            background: transparent;
+            border: none;
+        }
+
+        /* 背景幻灯片容器 - 保持16:9比例 */
+        .grocery-slideshow {
+            position: absolute;
+            top: -4vw;
+            left: -10vw;
+            width: calc(100% + 20vw);
+            height: calc(100% + 8vw);
+            z-index: 0;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .grocery-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .grocery-slideshow img.active {
+            opacity: 0.3;
+        }
+
+        /* 内容区域 */
+        .grocery-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .grocery-block h2 {
+            font-size: 2.6vw;
+            margin-top: 0;
+            color: #f5f5dc;
+            font-weight: normal;
+            letter-spacing: 0.5vw;
+            margin-bottom: 3vw;
+        }
+
+        .grocery-block .access-card {
+            padding: 4vw 6vw;
+            display: inline-block;
+        }
+
+        .grocery-block input {
+            width: 25vw;
+            padding: 1.2vw 1.5vw;
+            font-size: 1.4vw;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(245, 245, 220, 0.3);
+            border-radius: 0.5vw;
+            color: #f5f5dc;
+            text-align: center;
+            margin-bottom: 2vw;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .grocery-block input:focus {
+            border-color: var(--theater-red);
+            box-shadow: 0 0 1vw rgba(220, 20, 60, 0.3);
+        }
+
+        .grocery-block input::placeholder {
+            color: rgba(245, 245, 220, 0.4);
+        }
+
+        .grocery-block button {
+            padding: 1vw 3vw;
+            font-size: 1.3vw;
+            background: var(--theater-red);
+            border: none;
+            border-radius: 0.5vw;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.2vw;
+        }
+
+        .grocery-block button:hover {
+            background: #cc1a1a;
+            transform: scale(1.05);
+        }
+
+        /* ABOUT ME 分支样式 - 简约居中 */
+        .aboutme-block {
+            padding: 3vw 4vw;
+            text-align: center;
+        }
+
+        .aboutme-block h2 {
+            font-size: 2.4vw;
+            margin-top: 0;
+            color: #f5f5dc;
+            font-weight: normal;
+            letter-spacing: 1vw;
+            margin-bottom: 1.5vw;
+        }
+
+        .aboutme-block .divider {
+            width: 10vw;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--theater-red), transparent);
+            margin: 2vw auto;
+        }
+
+        .aboutme-block p {
+            font-size: 1.5vw;
+            line-height: 2.2;
+            color: rgba(245, 245, 220, 0.85);
+            margin-bottom: 1.5vw;
+        }
+
+        .aboutme-block p a {
+            font-size: 16px !important;
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .aboutme-block p a:hover {
+            color: #ff8787;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+/* 针对视频列表的样式微调，防止在其他页面报错 */
+        .video-title {
+            display: block;
+            padding: 0.5vw;
+            font-size: 1vw;
+            background: rgba(0,0,0,0.7);
+            color: var(--cream-white);
+        }
+    
+
+        /* 页脚 */
+        footer {
+            background-color: var(--theater-red);
+            height: 6vw;
+            display: flex;
+            align-items: center;
+            padding-left: 3vw;
+        }
+        .footer-line {
+            width: 10vw;
+            height: 1vw;
+            background: var(--cream-white);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 结构保持不变，仅样式已优化 -->
+    <header>4R 个人站</header>
+
+    <div class="hero-banner">
+        <img src="mianhome/titleword.webp" class="hero-top-img" alt="Title Word">
+        <img src="mianhome/cd1.webp" class="hero-overlay-img" alt="Overlay">
+    </div>
+
+    <nav class="nav-tabs" id="mainNav">
+        <div class="tab-item active" onclick="showBranch(0)">INTRODUCE</div>
+        <div class="tab-item" onclick="showBranch(1)">UTAU</div>
+        <div class="tab-item" onclick="showBranch(2)">GROCERY</div>
+        <div class="tab-item" onclick="showBranch(3)">ABOUT ME</div>
+    </nav>
+
+  <div id="content-container">
+        <!-- 分支 0: INTRODUCE (原有内容) -->
+        <div class="branch-content active introduce-block">
+            <!-- 背景图片 -->
+            <div class="introduce-bg"></div>
+            <div class="introduce-content">
+            <div class="content-row">
+                <div class="image-placeholder"></div>
+                <div class="text-lines">
+                    <p>💚🦊tsume：</p>
+                    <p>乐天轻浮派，但会认真地对待创作。剧组中担任导演编剧演员等职位，比较沉浸在自己的艺术里jpg</p>
+                    <p>人见人爱花见花开的lmh#家中耀祖##美系男子##屌丝男#</p>
+                </div>
+            </div>
+
+            <div class="content-row" style="flex-direction: row-reverse;">
+                <div class="image-placeholder new"></div>
+                <div class="text-lines">
+                    <p>🤍🐏U0：</p>
+                    <p>沉稳靠谱派，温柔长女气质。剧组中负责美术演员等职位。</p>
+                    <p>濒死的家女,有篡位耀祖之势#家中明珠##作者可能是头上长东西爱好者#</p>
+                </div>
+            </div>
+
+            <div class="video-slider-container">
+                <div class="video-track" id="track">
+                    <a href="https://www.bilibili.com/video/BV1ZuapzxEMV/" target="_blank" class="video-item">
+                        <img src="mianhome/视频/ete.webp" class="video-img">
+                        <span class="video-title">【白蝋オニグラシ】ete【OpenUTAU cover】</span>
+                    </a>
+                    <a href="https://www.bilibili.com/video/BV186N6eiEnv/" target="_blank" class="video-item">
+                        <img src="mianhome/视频/桃源.webp" class="video-img">
+                        <span class="video-title">【桃源郷へ行こう/OpenUTAU cover】</span>
+                    </a>
+                    <a href="https://www.bilibili.com/video/BV1m3pgedEMf/" target="_blank" class="video-item">
+                        <img src="mianhome/视频/warukuchi.webp" class="video-img">
+                        <span class="video-title">【わるぐち/OpenUTAU cover】</span>
+                    </a>
+                    <a href="https://www.bilibili.com/video/BV1UCx5z6E2n/" target="_blank" class="video-item">
+                        <img src="mianhome/视频/nora.webp" class="video-img">
+                        <span class="video-title">【椿原ノーラ】頬が乾くまで【UTAU cover】</span>
+                    </a>
+                </div>
+            </div>
+            </div> <!-- 关闭 introduce-content -->
+        </div>
+
+        <!-- 分支 1: UTAU -->
+        <div class="branch-content">
+            <div class="utau-block">
+                <div class="utau-left">
+                    <h2>UTAU PROJECT</h2>
+                    <p>这里是 UTAU 相关内容的展示区域。</p>
+                    <p>已配布UST：</p>
+                    <ul>
+                        <li><a href="https://bowlroll.net/file/352544" target="_blank">フラメンコ(demo)UST</a></li>
+                        <li><a href="https://bowlroll.net/file/333136" target="_blank">置き論破_UST</a></li>
+                        <li><a href="https://bowlroll.net/file/331334" target="_blank">ゆめのうた_UST</a></li>
+                        <li><a href="https://bowlroll.net/file/331332" target="_blank">恋じゃない、痛哭です_UST</a></li>
+                        <li><a href="https://bowlroll.net/file/331326" target="_blank">嘘憑き_UST</a></li>
+                        <li><a href="https://bowlroll.net/file/331327" target="_blank">ぺてん師_UST</a></li>
+                    </ul>
+                </div>
+                <div class="utau-right">
+                   <iframe width="314" height="321" scrolling="no" src="https://gifypet.neocities.org/pet/pet.html?name=tsume&dob=1777558077&gender=f&element=Air&pet=https%3A%2F%2Fs41.ax1x.com%2F2026%2F04%2F30%2FpeoHffI.png&map=https%3A%2F%2Fs41.ax1x.com%2F2026%2F04%2F30%2FpeoHzcV.png&background=paper.jpg&tablecolor=black&textcolor=black" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分支 2: GROCERY -->
+        <div class="branch-content">
+            <div class="grocery-block">
+                <!-- 背景幻灯片 -->
+                <div class="grocery-slideshow">
+                    <img src="mianhome/2026/1.webp" class="active" alt="Slide 1">
+                    <img src="mianhome/2026/2.webp" alt="Slide 2">
+                    <img src="mianhome/2026/3.webp" alt="Slide 3">
+                    <img src="mianhome/2026/4.webp" alt="Slide 4">
+                    <img src="mianhome/2026/5.webp" alt="Slide 5">
+                </div>
+                
+                <!-- 内容区域 -->
+                <div class="grocery-content">
+                    <h2>GROCERY / 杂货铺</h2>
+                    <div class="access-card">
+                        <input type="text" id="accessCode" placeholder="输入访问码">
+                        <button onclick="go()">进入</button>
+                    </div>
+                </div>
+
+<script>
+function go() {
+    var code = document.getElementById("accessCode").value;
+    if (code) {
+        window.location.href = "/" + code + ".html";
+    }
+}
+
+// 自动播放幻灯片
+var currentSlide = 0;
+setInterval(function() {
+    var slides = document.querySelectorAll('.grocery-slideshow img');
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % 5;
+    slides[currentSlide].classList.add('active');
+}, 5000); // 每5秒切换一次
+</script>
+            </div>
+        </div>
+
+        <!-- 分支 3: ABOUT ME -->
+        <div class="branch-content">
+            <div class="aboutme-block">
+                <h2>ABOUT ME</h2>
+                <div class="divider"></div>
+                <p>你好，这里是4R。</p>
+                <p>联系方式：</p>
+                <p>哔哩哔哩：@<a href="https://space.bilibili.com/694649512?spm_id_from=333.337.0.0" target="_blank">4R_</a></p>
+                <p>感谢你访问我的个人站！</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-line"></div>
+    </footer>
+
+    <script>
+        function showBranch(index) {
+            const contents = document.querySelectorAll('.branch-content');
+            const tabs = document.querySelectorAll('.tab-item');
+            contents.forEach(content => content.classList.remove('active'));
+            tabs.forEach(tab => tab.classList.remove('active'));
+            if(contents[index]) contents[index].classList.add('active');
+            tabs[index].classList.add('active');
+        }
+        
+    </script>
+    <script>
+    // 使用 JS 复制一份内容，实现无缝循环
+    const track = document.getElementById('track');
+    track.innerHTML += track.innerHTML;
+</script>
+
+    <script>
+    // 检测透明图片的不透明区域
+    document.addEventListener('DOMContentLoaded', function() {
+        const heroTopImg = document.querySelector('.hero-top-img');
+        if (!heroTopImg) return;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        };
+        img.src = heroTopImg.src;
+
+        heroTopImg.addEventListener('mousemove', function(e) {
+            const rect = heroTopImg.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // 计算相对于canvas的坐标
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const canvasX = Math.floor(x * scaleX);
+            const canvasY = Math.floor(y * scaleY);
+
+            // 获取像素数据
+            const pixelData = ctx.getImageData(canvasX, canvasY, 1, 1).data;
+            const alpha = pixelData[3];
+
+            // 如果透明度大于50（半透明以上），则认为在不透明区域
+            if (alpha > 50) {
+                heroTopImg.classList.add('hover-active');
+                heroTopImg.style.cursor = 'pointer';
+            } else {
+                heroTopImg.classList.remove('hover-active');
+                heroTopImg.style.cursor = 'default';
+            }
+        });
+
+        heroTopImg.addEventListener('mouseleave', function() {
+            heroTopImg.classList.remove('hover-active');
+            heroTopImg.style.cursor = 'default';
+        });
+    });
+</script>
+
+</body>
+</html>
