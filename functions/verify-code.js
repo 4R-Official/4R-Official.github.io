@@ -13,7 +13,7 @@ exports.handler = async (event) => {
           body: JSON.stringify({
             success: true,
             message: '访问码正确',
-            redirectUrl: '/secret.html'
+            redirectUrl: '/private.html'
           })
         };
       } else {
