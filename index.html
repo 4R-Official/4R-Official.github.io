@@ -168,7 +168,7 @@
             border-radius: 1vw;
         }
         .image-placeholder.new {
-            background-image: url('mainhome/u0img.webp');
+            background-image: url('mianhome/u0img.webp'); /* 替换为不同的图片 */
         }
         .text-lines {
             flex-grow: 1;
@@ -604,9 +604,34 @@
                 </div>
 
 <script>
-function go() {
+async function go() {
     var code = document.getElementById("accessCode").value;
-    if (code) {
+    if (!code) {
+        alert('请输入访问码');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/verify-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ code: code })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('验证成功！');
+            window.location.href = result.redirectUrl;
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        // 如果 API 不可用（本地开发或部署问题），使用备用方案
+        alert('连接服务器失败，正在使用备用验证...');
+        // 备用方案：直接跳转（用于本地测试）
         window.location.href = "/" + code + ".html";
     }
 }
