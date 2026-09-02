@@ -135,6 +135,47 @@
             border-bottom: 0.2vw solid transparent;
         }
 
+        /* UTAU 下拉子菜单 */
+        .utau-dropdown {
+            position: relative;
+        }
+
+        .utau-submenu {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            min-width: 12vw;
+            z-index: 30;
+            border: none;
+            border-radius: 0.5vw;
+            padding: 0.5vw 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .utau-dropdown:hover .utau-submenu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .utau-submenu div {
+            padding: 0.8vw 1.5vw;
+            font-size: 1vw;
+            color: var(--cream-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .utau-submenu div:hover {
+            background-color: var(--theater-red);
+            color: white;
+        }
+
         /* 4. 内容容器 */
         #content-container {
             margin-top: -8vw;
@@ -168,7 +209,7 @@
             border-radius: 1vw;
         }
         .image-placeholder.new {
-            background-image: url('mianhome/u0img.webp'); /* 替换为不同的图片 */
+            background-image: url('mianhome/yuureiimg.webp'); /* 替换为不同的图片 */
         }
         .text-lines {
             flex-grow: 1;
@@ -183,10 +224,10 @@
 
         /* 电影胶卷 */
         .video-slider {
-            width: 100%;
+            width: 100vw;
             overflow: hidden;
             position: relative;
-            margin: 2vw -4vw;
+            margin: 2vw calc(50% - 50vw);
         }
         .video-track {
             display: flex;
@@ -194,12 +235,9 @@
             animation: scroll 30s linear infinite;
             background-image: url('mianhome/film.webp');
             background-size: 48% 100%;
-            background-position: -11vw center;
+            background-position: left center;
             background-repeat: repeat-x;
             padding: 3vw 0; /* 减小胶卷高度 */
-        }
-        .video-slider:hover .video-track {
-            animation-play-state: paused;
         }
         .video-item {
             flex-shrink: 0;
@@ -269,6 +307,15 @@
         }
 
         /* UTAU 分支样式 - 左侧竖线装饰 */
+        .utau-subpage {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .utau-subpage.active {
+            display: block;
+        }
+
         .utau-block {
             padding: 3vw 4vw;
             border-left: 4px solid var(--theater-red);
@@ -289,7 +336,7 @@
         .utau-block h2 {
             font-size: 2.8vw;
             margin-top: 0;
-            color: var(--theater-red);
+            color: var(--cream-white);
             font-weight: bold;
             letter-spacing: 0.3vw;
             margin-bottom: 2vw;
@@ -297,10 +344,73 @@
         }
 
         .utau-block p {
-            font-size: 1.4vw;
+            font-size: 1vw;
             line-height: 2;
             color: rgba(245, 245, 220, 0.9);
             margin-bottom: 1.5vw;
+        }
+
+        .utau-block .rule-intro {
+            color: rgba(245, 245, 220, 0.7);
+            font-style: italic;
+            margin-bottom: 2vw;
+            padding-left: 1vw;
+            border-left: 2px solid rgba(245, 245, 220, 0.3);
+        }
+
+        .utau-block .rule-intro-group {
+            color: rgba(245, 245, 220, 0.7);
+            font-style: italic;
+            margin-bottom: 2vw;
+            padding-left: 1vw;
+            border-left: 2px solid rgba(245, 245, 220, 0.3);
+        }
+
+        .utau-block .rule-intro-group p {
+            font-size: 1vw;
+            line-height: 2;
+            color: rgba(245, 245, 220, 0.7);
+            margin-bottom: 0.5vw;
+        }
+
+        .utau-block .rule-intro-group p:last-child {
+            margin-bottom: 0;
+        }
+
+        .utau-block .rule-section-title {
+            font-size: 1.5vw;
+            color: var(--theater-red);
+            margin-top: 2vw;
+            margin-bottom: 1vw;
+            font-weight: bold;
+            letter-spacing: 0.1vw;
+        }
+
+        .utau-block .rule-subtitle {
+            color: rgba(245, 245, 220, 0.95);
+            font-weight: normal;
+            font-size: 1.0vw;
+            margin-top: 1vw;
+            margin-bottom: 0.5vw;
+        }
+
+        .utau-block .rule-list {
+            padding-left: 2vw;
+            margin-bottom: 1.5vw;
+            color: rgba(245, 245, 220, 0.9);
+        }
+
+        .utau-block .rule-list li,
+        .utau-block .rule-list-bullet li {
+            font-size: 1vw;
+            line-height: 1.8;
+            margin-bottom: 0.5vw;
+        }
+
+        .utau-block .rule-list-bullet {
+            padding-left: 2vw;
+            list-style-type: disc;
+            color: rgba(245, 245, 220, 0.9);
         }
 
         .utau-block ul {
@@ -313,7 +423,7 @@
         }
 
         .utau-block li a {
-            font-size: 16px !important;
+            font-size: 1.4vw !important;
             color: #f5f5dc;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -486,9 +596,10 @@
             padding-left: 3vw;
         }
         .footer-line {
-            width: 10vw;
-            height: 1vw;
-            background: var(--cream-white);
+            color: var(--cream-white);
+            font-size: 1.3vw;
+            font-family: 'Huiwen', 'Noto Sans SC', sans-serif;
+            letter-spacing: 0.1vw;
         }
 
         @keyframes fadeIn {
@@ -508,7 +619,14 @@
 
     <nav class="nav-tabs" id="mainNav">
         <div class="tab-item active" onclick="showBranch(0)">INTRODUCE</div>
-        <div class="tab-item" onclick="showBranch(1)">UTAU</div>
+        <div class="tab-item utau-dropdown" onclick="showBranch(1)">
+            UTAU
+            <div class="utau-submenu">
+                <div onclick="showUtauSub(event, 0); event.stopPropagation();">UST配布</div>
+                <div onclick="showUtauSub(event, 1); event.stopPropagation();">音源配布</div>
+                <div onclick="showUtauSub(event, 2); event.stopPropagation();">利用规约</div>
+            </div>
+        </div>
         <div class="tab-item" onclick="showBranch(2)">GROCERY</div>
         <div class="tab-item" onclick="showBranch(3)">ABOUT ME</div>
     </nav>
@@ -522,7 +640,7 @@
             <div class="content-row">
                 <div class="image-placeholder"></div>
                 <div class="text-lines">
-                    <p>💚🦊tsume：</p>
+                    <p>💚🦊小川町ツメ：</p>
                     <p>乐天轻浮派，但会认真地对待创作。剧组中担任导演编剧演员等职位，比较沉浸在自己的艺术里jpg</p>
                     <p>人见人爱花见花开的lmh#家中耀祖##美系男子##屌丝男#</p>
                 </div>
@@ -531,14 +649,15 @@
             <div class="content-row" style="flex-direction: row-reverse;">
                 <div class="image-placeholder new"></div>
                 <div class="text-lines">
-                    <p>🤍🐏U0：</p>
+                    <p>🤍🐏ゆ0：</p>
                     <p>沉稳靠谱派，温柔长女气质。剧组中负责美术演员等职位。</p>
                     <p>濒死的家女,有篡位耀祖之势#家中明珠##作者可能是头上长东西爱好者#</p>
                 </div>
             </div>
 
-            <div class="video-slider-container">
+            <div class="video-slider-container video-slider">
                 <div class="video-track" id="track">
+                    <!-- 以下为静态兜底内容，JS会自动替换为B站主页最新视频 -->
                     <a href="https://www.bilibili.com/video/BV1ZuapzxEMV/" target="_blank" class="video-item">
                         <img src="mianhome/视频/ete.webp" class="video-img">
                         <span class="video-title">【白蝋オニグラシ】ete【OpenUTAU cover】</span>
@@ -562,22 +681,95 @@
 
         <!-- 分支 1: UTAU -->
         <div class="branch-content">
-            <div class="utau-block">
-                <div class="utau-left">
-                    <h2>UTAU PROJECT</h2>
-                    <p>这里是 UTAU 相关内容的展示区域。</p>
-                    <p>已配布UST：</p>
-                    <ul>
-                        <li><a href="https://bowlroll.net/file/352544" target="_blank">フラメンコ(demo)UST</a></li>
-                        <li><a href="https://bowlroll.net/file/333136" target="_blank">置き論破_UST</a></li>
-                        <li><a href="https://bowlroll.net/file/331334" target="_blank">ゆめのうた_UST</a></li>
-                        <li><a href="https://bowlroll.net/file/331332" target="_blank">恋じゃない、痛哭です_UST</a></li>
-                        <li><a href="https://bowlroll.net/file/331326" target="_blank">嘘憑き_UST</a></li>
-                        <li><a href="https://bowlroll.net/file/331327" target="_blank">ぺてん師_UST</a></li>
-                    </ul>
+            <!-- UTAU 子页面 0: UST配布 -->
+            <div class="utau-subpage active" id="utau-sub-0">
+                <div class="utau-block">
+                    <div class="utau-left">
+                        <h2>UST配布</h2>
+                        <p>这里是已配布的UST文件。</p>
+                        <ul>
+                            <li><a href="https://bowlroll.net/file/352544" target="_blank">フラメンコ(demo)UST</a></li>
+                            <li><a href="https://bowlroll.net/file/333136" target="_blank">置き論破_UST</a></li>
+                            <li><a href="https://bowlroll.net/file/331334" target="_blank">ゆめのうた_UST</a></li>
+                            <li><a href="https://bowlroll.net/file/331332" target="_blank">恋じゃない、痛哭です_UST</a></li>
+                            <li><a href="https://bowlroll.net/file/331326" target="_blank">嘘憑き_UST</a></li>
+                            <li><a href="https://bowlroll.net/file/331327" target="_blank">ぺてん師_UST</a></li>
+                        </ul>
+                    </div>
+                    <div class="utau-right">
+                       <iframe width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=小川町ツメ&dob=1788282102&gender=m&element=Air&pet=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282001655_pet.webp&map=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282071119_%E5%90%8E%E5%AE%A4.webp&background=wood.jpg&tablecolor=black&textcolor=white" frameborder="0"></iframe>
+                    </div>
                 </div>
-                <div class="utau-right">
-                   <iframe width="314" height="321" scrolling="no" src="https://gifypet.neocities.org/pet/pet.html?name=tsume&dob=1777897812&gender=undefined&element=Air&pet=https%3A%2F%2Fraw.githubusercontent.com%2F4R%2FNigram%2Fmain%2Fmianhome%2Fpet.webp&map=https%3A%2F%2Fraw.githubusercontent.com%2F4R%2FNigram%2Fmain%2Fmianhome%2F%E5%90%8E%E5%AE%A4.webp&background=paper.jpg&tablecolor=black&textcolor=black" frameborder="0"></iframe>
+            </div>
+
+            <!-- UTAU 子页面 1: 音源配布 -->
+            <div class="utau-subpage" id="utau-sub-1">
+                <div class="utau-block">
+                    <div class="utau-left">
+                        <h2>音源配布</h2>
+                        <p>这里是已配布的音源文件。</p>
+                        <p>暂无配布内容，敬请期待！</p>
+                    </div>
+                    <div class="utau-right">
+                       <iframe width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=小川町ツメ&dob=1788282102&gender=m&element=Air&pet=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282001655_pet.webp&map=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282071119_%E5%90%8E%E5%AE%A4.webp&background=wood.jpg&tablecolor=black&textcolor=white" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UTAU 子页面 2: 利用规约 -->
+            <div class="utau-subpage" id="utau-sub-2">
+                <div class="utau-block">
+                    <div class="utau-left">
+                        <h2>利用规约</h2>
+                        <p class="rule-intro">以utau中华组wiki公共使用规约为基础进行了少量修改</p>
+
+                        <h3 class="rule-section-title">关于著作权利所属</h3>
+                        <div class="rule-intro-group">
+                            <p>音源、角色的权利由音源管理者、声音提供者、角色设计者等创作者本人持有。</p>
+                            <p>各个音源具体的权利持有人记载在各自的页面中。</p>
+                        </div>
+                        <p>当用户使用音源时，默认遵从以下两点前提:</p>
+                        <ol class="rule-list">
+                            <li>使用者承诺遵守本使用规约。</li>
+                            <li>使用者同意，当权利持有人要求停止使用时遵从这一要求。</li>
+                        </ol>
+
+                        <h3 class="rule-section-title">使用规约正文</h3>
+                        <p class="rule-subtitle">用户可以自由进行以下行为，无需联络音源管理者：</p>
+                        <ol class="rule-list">
+                            <li>在网络上发表二次创作作品，并公开配发相关资料</li>
+                            <li>在个人使用的范围内对音源文件进行加工/改变/修正</li>
+                            <li>R-18以下（不包含性器、性行为的直接描写)的色情表现</li>
+                            <li>轻度（战斗场面、流血表现等）的暴力/猎奇表现</li>
+                            <li>服装更改/性别转换/年龄改变/非人类角色的拟人化等，改变角色外貌的表现</li>
+                        </ol>
+
+                        <p class="rule-subtitle">以下行为需要事先联络音源管理者：</p>
+                        <ol class="rule-list">
+                            <li>所有的线下同人活动、商业活动（无论有偿无偿）</li>
+                            <li>包括服装的制作和贩卖在内的，任何形式的Cosplay活动</li>
+                            <li>虚拟主播等直接扮演角色的活动</li>
+                            <li>死亡场面、较重度的猎奇表现、猎奇方向的人外化表现</li>
+                            <li>配布自己修正的原音设定、周波数表</li>
+                        </ol>
+
+                        <p class="rule-subtitle">严格禁止以下行为：</p>
+                        <ol class="rule-list">
+                            <li>擅自配布音源文件</li>
+                            <li>和政治宣传、宗教布教有关的表现</li>
+                            <li>用于给原创角色配音等，将音源作为其他人的声音使用</li>
+                        </ol>
+
+                        <h3 class="rule-section-title">补充</h3>
+                        <ul class="rule-list-bullet">
+                            <li>使用音源时请务必将音源名标注于醒目位置</li>
+                            <li>在使用他人的二次创作时请务必征求当事人同意</li>
+                            <li>身高体重、性格等公式设定仅作参考。可以根据作品需要进行改动。</li>
+                        </ul>
+                    </div>
+                    <div class="utau-right">
+                       <iframe width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=小川町ツメ&dob=1788282102&gender=m&element=Air&pet=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282001655_pet.webp&map=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282071119_%E5%90%8E%E5%AE%A4.webp&background=wood.jpg&tablecolor=black&textcolor=white" frameborder="0"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -662,7 +854,7 @@ setInterval(function() {
     </div>
 
     <footer>
-        <div class="footer-line"></div>
+        <div class="footer-line">©2026 by 4R</div>
     </footer>
 
     <script>
@@ -674,12 +866,57 @@ setInterval(function() {
             if(contents[index]) contents[index].classList.add('active');
             tabs[index].classList.add('active');
         }
+
+        // 切换 UTAU 子页面
+        function showUtauSub(event, subIndex) {
+            event.stopPropagation();
+            // 切换到 UTAU 分支
+            showBranch(1);
+            // 切换子页面
+            const subpages = document.querySelectorAll('.utau-subpage');
+            subpages.forEach(page => page.classList.remove('active'));
+            subpages[subIndex].classList.add('active');
+        }
         
     </script>
     <script>
-    // 使用 JS 复制一份内容，实现无缝循环
+    // 胶片视频：自动抓取B站主页视频（封面图 + 超链接），失败时保留页面中的静态兜底内容
     const track = document.getElementById('track');
-    track.innerHTML += track.innerHTML;
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, s => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[s]));
+    }
+
+    // 复制一份内容，实现无缝循环（动画位移 -50% 正好等于一份内容的宽度）
+    function startLoop() {
+        track.innerHTML += track.innerHTML;
+    }
+
+    function renderVideos(videos) {
+        track.innerHTML = videos.map(v => `
+            <a href="${v.url}" target="_blank" rel="noopener" class="video-item">
+                <img src="${v.pic}" alt="${escapeHtml(v.title)}" class="video-img" referrerpolicy="no-referrer" loading="lazy">
+                <span class="video-title">${escapeHtml(v.title)}</span>
+            </a>
+        `).join('');
+        // 按视频数量调整动画时长，保持与原来一致的滚动速度（原 4 个视频 ≈ 30s）
+        track.style.animationDuration = (videos.length * 7.5) + 's';
+        startLoop();
+    }
+
+    // 先复制静态内容，保证接口返回前胶卷也是无缝滚动的
+    startLoop();
+
+    fetch('/api/bilibili-videos')
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.success && data.videos && data.videos.length > 0) {
+                renderVideos(data.videos);
+            }
+        })
+        .catch(() => { /* 接口不可用（如本地直接打开 HTML）：保留静态兜底内容 */ });
 </script>
 
     <script>

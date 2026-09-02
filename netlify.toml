@@ -5,3 +5,8 @@
   from = "/api/verify-code"
   to = "/.netlify/functions/verify-code"
   status = 200
+
+[[redirects]]
+  from = "/api/bilibili-videos"
+  to = "/.netlify/functions/bilibili-videos"
+  status = 200

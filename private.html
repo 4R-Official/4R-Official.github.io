@@ -1,96 +1,236 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <title>My first web page</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- This is a comment, by the way -->
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
 
+        /* 背景幻灯片容器 */
+        .slideshow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* 单个幻灯片 */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 覆盖层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        /* 内容区域 */
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .content h1 {
+            font-size: 4vw;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5vw;
+        }
+
+        .content p {
+            font-size: 1.5vw;
+            opacity: 0.9;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 导航指示器 */
+        .indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 15px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* 上一页/下一页按钮 */
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 30px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-button.prev {
+            left: 20px;
+        }
+
+        .nav-button.next {
+            right: 20px;
+        }
+    </style>
 </head>
-
 <body>
+    <!-- 背景幻灯片 -->
+    <div class="slideshow-container">
+        <div class="slide active">
+            <img src="mianhome/2026/1.webp" alt="Slide 1">
+        </div>
+        <div class="slide">
+            <img src="mianhome/2026/2.webp" alt="Slide 2">
+        </div>
+        <div class="slide">
+            <img src="mianhome/2026/3.webp" alt="Slide 3">
+        </div>
+        <div class="slide">
+            <img src="mianhome/2026/4.webp" alt="Slide 4">
+        </div>
+        <div class="slide">
+            <img src="mianhome/2026/5.webp" alt="Slide 5">
+        </div>
+    </div>
 
-<h1>My first web page</h1>
+    <!-- 覆盖层 -->
+    <div class="overlay"></div>
 
-<h2>What this is</h2>
-<p>A simple page put together using HTML. <em>I said a simple page put together using HTML.</em> A simple page put together using HTML. A simple page put together using HTML. A simple page put together using HTML. A simple page put together using HTML. A simple page put together using HTML. A simple page put together using HTML. A simple page put together using HTML.</p>
+    <!-- 内容 -->
+    <div class="content">
+        <h1>私人空间</h1>
+        <p>欢迎来到我的私人页面</p>
+    </div>
 
-<h2>Why this is</h2>
-<ul>
-    <li>To learn HTML</li>
-    <li>
-        To show off
-        <ol>
-            <li>To my boss</li>
-            <li>To my friends</li>
-            <li>To my cat</li>
-            <li>To the little talking duck in my brain</li>
-        </ol>
-    </li>
-    <li>Because I have fallen in love with my computer and want to give her some HTML loving.</li>
-</ul>
+    <!-- 导航按钮 -->
+    <button class="nav-button prev" onclick="prevSlide()">‹</button>
+    <button class="nav-button next" onclick="nextSlide()">›</button>
 
-<h2>Where to find the tutorial</h2>
-<p><a href="http://www.htmldog.com"><img src="http://www.htmldog.com/badge1.gif" width="120" height="90" alt="HTML Dog"></a></p>
+    <!-- 指示器 -->
+    <div class="indicators">
+        <div class="indicator active" onclick="goToSlide(0)"></div>
+        <div class="indicator" onclick="goToSlide(1)"></div>
+        <div class="indicator" onclick="goToSlide(2)"></div>
+        <div class="indicator" onclick="goToSlide(3)"></div>
+        <div class="indicator" onclick="goToSlide(4)"></div>
+    </div>
 
-<h3>Some random table</h3>
-<table>
-    <tr>
-        <td>Row 1, cell 1</td>
-        <td>Row 1, cell 2</td>
-        <td>Row 1, cell 3</td>
-    </tr>
-    <tr>
-        <td>Row 2, cell 1</td>
-        <td>Row 2, cell 2</td>
-        <td>Row 2, cell 3</td>
-    </tr>
-    <tr>
-        <td>Row 3, cell 1</td>
-        <td>Row 3, cell 2</td>
-        <td>Row 3, cell 3</td>
-    </tr>
-    <tr>
-        <td>Row 4, cell 1</td>
-        <td>Row 4, cell 2</td>
-        <td>Row 4, cell 3</td>
-    </tr>
-</table>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const slideInterval = 5000; // 切换间隔（毫秒）
+        let intervalId;
 
-<h3>Author contact details</h3>
-<address>
-<ul>
-    <li>0123-456-7890</li>
-    <li>author_dude@noplaceinteresting.com</li>
-    <li>http://www.noplaceinteresting.com/contactme/</li>
-</ul>
-</address>
+        // 显示指定幻灯片
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                indicators[i].classList.remove('active');
+            });
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+            currentSlide = index;
+        }
 
-<h3>Some random form</h3>
-<p><strong>Note:</strong> It looks the part, but won't do a damned thing.</p>
+        // 下一页
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
 
-<form action="contactus.php" method="post">
+        // 上一页
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
 
-<p>Name:</p>
-<p><input name="name" value="Your name"></p>
+        // 跳转到指定页
+        function goToSlide(index) {
+            showSlide(index);
+            // 重置自动播放
+            clearInterval(intervalId);
+            intervalId = setInterval(nextSlide, slideInterval);
+        }
 
-<p>Comments: </p>
-<p><textarea rows="10" cols="20" name="comments">Your comments</textarea></p>
+        // 自动播放
+        intervalId = setInterval(nextSlide, slideInterval);
 
-<p>Are you:</p>
-<p><input type="radio" name="areyou" value="male"> Male</p>
-<p><input type="radio" name="areyou" value="female"> Female</p>
-<p><input type="radio" name="areyou" value="hermaphrodite"> An hermaphrodite</p>
-<p><input type="radio" name="areyou" value="asexual" checked> Asexual</p>
+        // 鼠标悬停时暂停自动播放
+        document.addEventListener('mouseover', () => {
+            clearInterval(intervalId);
+        });
 
-<p><input type="submit"></p>
-
-<p>If you add the line <code><var>givevaderachuckle</var> = true;</code> to the <code>destroy_planet</code> subroutine and then type <kbd>ilovejabba</kbd> into the console, the big bad green Death Star laser will etch <samp>Slug Lover!</samp> on the planet's surface.</p>
-
-</form>
-
+        // 鼠标离开时恢复自动播放
+        document.addEventListener('mouseout', () => {
+            intervalId = setInterval(nextSlide, slideInterval);
+        });
+    </script>
 </body>
-
 </html>
