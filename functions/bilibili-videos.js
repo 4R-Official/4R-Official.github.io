@@ -52,7 +52,9 @@ async function fetchVideosFromBilibili() {
       url: it.bvid
         ? `https://www.bilibili.com/video/${it.bvid}`
         : `https://www.bilibili.com/video/av${it.param}`,
-    }));
+    }))
+    .filter((v) => /utau/i.test(v.title)) // 只保留标题中含 UTAU 的视频（不区分大小写）
+    .slice(0, 10); // 取最新 10 个
 }
 
 exports.handler = async () => {
