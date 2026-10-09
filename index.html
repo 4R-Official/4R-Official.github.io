@@ -350,6 +350,67 @@
             margin-bottom: 1.5vw;
         }
 
+        /* 音源配布卡片 */
+        .voicebank-card {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            padding: 1vw 1vw 1vw 1.5vw;
+            margin-bottom: 2vw;
+            max-width: 80%;
+        }
+
+        .voicebank-card .voicebank-avatar {
+            width: 8vw;
+            height: 8vw;
+            border-radius: 0;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .voicebank-card .voicebank-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .voicebank-card .voicebank-name {
+            font-size: 1.2vw;
+            color: var(--cream-white);
+            margin-bottom: 0.3vw;
+            letter-spacing: 0.1vw;
+        }
+
+        .voicebank-card .voicebank-desc {
+            font-size: 0.9vw;
+            color: rgba(245, 245, 220, 0.6);
+            margin-bottom: 0.5vw;
+        }
+
+        .voicebank-card audio {
+            width: 100%;
+            height: 2.5vw;
+            outline: none;
+            filter: sepia(0.3) saturate(0.8);
+        }
+
+        .voicebank-card .voicebank-download {
+            margin-left: auto;
+            align-self: center;
+            flex-shrink: 0;
+            font-size: 0.9vw;
+            color: var(--cream-white);
+            background-color: var(--theater-red);
+            border-radius: 0.3vw;
+            padding: 0.4vw 1.2vw;
+            text-decoration: none;
+            letter-spacing: 0.1vw;
+            transition: background-color 0.3s ease;
+        }
+
+        .voicebank-card .voicebank-download:hover {
+            background-color: rgba(122, 31, 22, 0.7);
+        }
+
         .utau-block .rule-intro {
             color: rgba(245, 245, 220, 0.7);
             font-style: italic;
@@ -538,7 +599,7 @@
         /* ABOUT ME 分支样式 - 简约居中 */
         .aboutme-block {
             padding: 3vw 4vw;
-            text-align: center;
+            text-align: left;
         }
 
         .aboutme-block h2 {
@@ -708,7 +769,16 @@
                     <div class="utau-left">
                         <h2>音源配布</h2>
                         <p>这里是已配布的音源文件。</p>
-                        <p>暂无配布内容，敬请期待！</p>
+
+                        <div class="voicebank-card">
+                            <img class="voicebank-avatar" src="mianhome/tsumeimg.webp" alt="小川町ツメ">
+                            <div class="voicebank-info">
+                                <p class="voicebank-name">小川町ツメ-cut-</p>
+                                <p class="voicebank-desc">UTAU向け D4単音音階</p>
+                                <audio controls preload="none" src="mianhome/音源配布试听音频/tsume-cut(test).wav"></audio>
+                            </div>
+                            <a class="voicebank-download" href="https://bowlroll.net/file/361981" target="_blank">Download</a>
+                        </div>
                     </div>
                     <div class="utau-right">
                        <iframe width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=小川町ツメ&dob=1788282102&gender=m&element=Air&pet=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282001655_pet.webp&map=https%3A%2F%2Fcloudflare-imgbed-c30.pages.dev%2Ffile%2F1788282071119_%E5%90%8E%E5%AE%A4.webp&background=wood.jpg&tablecolor=black&textcolor=white" frameborder="0"></iframe>
@@ -845,10 +915,7 @@ setInterval(function() {
             <div class="aboutme-block">
                 <h2>ABOUT ME</h2>
                 <div class="divider"></div>
-                <p>你好，这里是4R。</p>
-                <p>联系方式：</p>
-                <p>哔哩哔哩：@<a href="https://space.bilibili.com/694649512?spm_id_from=333.337.0.0" target="_blank">4R_</a></p>
-                <p>感谢你访问我的个人站！</p>
+                <p>页面正在装修中，敬请期待！</p>
             </div>
         </div>
     </div>
